@@ -15,21 +15,18 @@ void printlinkedlist(struct node *head)//print the node present in the ll
     printf("Linked List is Empty");
   }
   printf("The data in linked list is :");
-  struct node *ptr=NULL;
-  ptr=head;
+  struct node *ptr=head;
   while(ptr!=NULL)
     {
-      printf("%d->",ptr->data);
+      printf("%d-> ",ptr->data);
       ptr=ptr->link;
     }
   printf("\n");
   }
 
-
-
 void count_of_nodes(struct node *head)//count the node in ll
 {
-  printf("The count of the ll is :");
+  printf("The count of the linked iist is :");
   int count=0;
   if(head==NULL)
   {
@@ -66,47 +63,201 @@ void add_at_end(struct node *head,int data)//insert the node at end
     printf("\n");
 }
 
-void add_at_beg(struct node *head,int data)//insert node at beg
+struct node* add_at_beg(struct node *head,int data)//insert node at beg
 {
-   printf("The node at beg is :");
   struct node *ptr;
   ptr=malloc(sizeof(struct node));
   ptr->data=data;
   ptr->link=NULL;
   ptr->link=head;
   head=ptr;
-  printf("%d",ptr->data);
+  return head;
   printf("\n");
+}
+
+void add_at_cerpos(struct node *head,int data,int pos)//add node at cerpos
+{
+  struct node *tra,*ptr,*temp;
+  tra=head;
+  ptr=malloc(sizeof(struct node));
+  ptr->data=data;
+  ptr->link=NULL;
+  
+  
+  for(int i=1;i<pos-1;i++)
+    {
+      tra=tra->link;
+    }
+   ptr->link=tra->link;
+   tra->link=ptr;
+  
+}
+////////////////////////////DELETION//////////////////////////////////////
+
+struct node* del_at_beg(struct node *head)//del at beginning
+{
+  if(head==NULL)
+  {
+    printf("The linked list is empty");
+    return NULL;
+  }
+  else
+  {
+    struct node *ptr=head;
+    head=head->link;
+    free(ptr);
+    ptr=NULL;
+  }
+  return head;
+}
+
+struct node *del_at_end(struct node *head)//del at ending
+{
+  if(head==NULL)
+  {
+    printf("The linked list is empty");
+  }
+  else if(head->link==NULL)
+  {
+    free(head);
+    head=NULL;
+  }
+  else
+  {
+    struct node *ptr,*ptr2;
+    ptr=head;
+    ptr2=head;
+    while(ptr->link!=NULL)
+      {  
+        ptr2=ptr;
+        ptr=ptr->link;
+      }
+      ptr2->link=NULL;
+  }
+  return head;
+  
+}
+
+ void del_at_cerpos(struct node *head,int pos)//del at cerpos
+{
+  if(head==NULL)
+  {
+    printf("The linked list is empty");
+  }
+  else if(head->link==NULL)
+  {
+    free(head);
+    head=NULL;
+  }
+  else
+  {
+    struct node *ptr,*tra;
+    ptr=head;
+    tra=head;
+    for(int i=1;i<=pos;i++)
+    {
+      ptr=tra;
+      tra=tra->link;
+    }
+    ptr->link=tra->link;
+    free(tra);
+    tra=NULL;
+  }
+
+}
+
+///////////////////////Sorting///////////////////////////////////
+
+void sorting(struct node *head)//sorting
+{
+  struct node *current,*index=NULL;
+  current=head;
+  //int temp;
+  while(current!=NULL)
+    {
+      index=current->link;
+      while(index!=NULL)
+        {
+          if(current->data > index->data)
+          {
+           int temp=current->data;
+           current->data=index->data;
+           index->data=temp;
+          }
+
+          index=index->link;
+        }
+      current=current->link;
+    }
 }
 //main function
 int main()
 {
   struct node *head=malloc(sizeof(struct node));
-  head->data=1;
+  head->data=65;
   head->link=NULL;
 
   struct node *current=malloc(sizeof(struct node));
-  current->data=2;
+  current->data=32;
   current->link=NULL;
   head->link=current;
 
   current=malloc(sizeof(struct node));
-  current->data=3;
+  current->data=12;
   current->link=NULL;
   head->link->link=current;
 
   current=malloc(sizeof(struct node));
-  current->data=4;
+  current->data=97;
   current->link=NULL;
   head->link->link->link=current;
-  
-  printlinkedlist(head);
 
-  count_of_nodes(head);
-
+ while(1){
+  int n;
+  scanf("%d",&n);
+  if(n==0)
+  {
+    printlinkedlist(head);
+  }
+  else if(n==1)
+  {
   add_at_end(head,5);
-  
-  add_at_beg(head,0);
-  
+  printlinkedlist(head);
+  }
+  else if(n==2)
+  {
+  head=add_at_beg(head,0);
+  printlinkedlist(head);
+  }
+  else if(n==3)
+  {
+  add_at_cerpos(head,34,3);
+  printlinkedlist(head);
+  }
+  else if(n==4)
+  {
+  head=del_at_beg(head);
+  printlinkedlist(head);
+  }
+  else if(n==5)
+  {
+  head=del_at_end(head);
+  printlinkedlist(head);
+  }
+  else if(n==6)
+  {
+  del_at_cerpos(head,3);
+  printlinkedlist(head);
+  }
+  else if(n==7)
+  {
+  count_of_nodes(head);
+  }
+  else if(n==8)
+  {
+  sorting(head);
+  printlinkedlist(head);
+  }
+  }
   return 0;
 }
